@@ -1,70 +1,147 @@
-# Getting Started with Create React App
+# Technical Screening
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Check out the [live example](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+- [x] create 2 inputs
+- [x] use references
+- [x] build in the React hooks api
+- [x] add a conditional rendering
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `Documentation`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### `useRef`
 
-### `npm test`
+```js
+const userRef = useRef();
+const errorRef = useRef();
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+userRef was created to set the focus on the username input on render.
+errorRef is used to send an alert in the top of the screen when the credetials are invalid. it is mostly scafolding until the api is wired in.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### `useState`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
+const [user, setUser] = useState("");
+const [pw, setPw] = useState("");
+const [errorMesg, setErrorMesg] = useState("");
+const [valid, setValid] = useState(false);
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**user/setUser** and **pw/setPw** are wired in to their corrisponding input fields to hold the value. The **errorMesg** is used to set the invalid value. The **valid/setValid** state is at the moment used for the conditional rendering. In the future, will be replaced with **React Router**.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `useEffect`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
+useEffect(() => {
+  userRef.current.focus();
+}, []);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+useEffect(() => {
+  setErrorMesg("");
+}, [user, pw]);
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The first useEffect is used to set the focus on the username field on component mount. The second useEffect is used to clear out the error messege state if the user chooses to change the credentials.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### `submitHandler`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setUser("");
+  setPw("");
+  setValid((prev) => !prev);
+};
+```
 
-### Code Splitting
+#### `jsx`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```jsx
+<>
+  {valid ? (
+    <section>
+      <h1>{user} has been created!</h1>
+      <p>
+        <a href="/">Home</a>
+      </p>
+    </section>
+  ) : (
+    <section>
+      <p
+        ref={errorRef}
+        className={errorMesg ? "error-messege" : "offscreen"}
+        aria-live="assertive"
+      >
+        {errorMesg}
+      </p>
 
-### Analyzing the Bundle Size
+      <h1>Register</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          ref={userRef}
+          placeholder="Username"
+          autoComplete="off"
+          onChange={(e) => setUser(e.target.value)}
+          value={user}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPw(e.target.value)}
+          value={pw}
+          required
+        />
+        <button>Register</button>
+      </form>
+      <p>
+        Have an Account?
+        <span className="line">
+          <a href="#"> Sign In</a>
+        </span>
+      </p>
+    </section>
+  )}
+</>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The page has a conditional rendering depending on a successful entry. At the top, we display the username entered with a welcome messege.
 
-### Making a Progressive Web App
+The second page renders the simple registration page. The top of it holds the error message toast that displays when an errorMesg is added.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```css
+.error-messege {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+} */
+```
 
-### Advanced Configuration
+Otherwise, it should sit offscreen
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```css
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+```
 
-### Deployment
+The 2 inputs are wired into their states onChange while passing the event value. The username input field is ref by userRef to make it focus on first render. The required tag is added for the nice UI when registering without any inputs.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Hired](https://media.giphy.com/media/3ohhwIqvzoZI2O4o9O/giphy.gif)

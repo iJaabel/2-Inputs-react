@@ -48,7 +48,7 @@ export default function Login() {
             {errorMesg}
           </p> */}
 
-          <h1>Register</h1>
+          <h1>Create an account</h1>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -69,7 +69,7 @@ export default function Login() {
             <button>Register</button>
           </form>
           <p>
-            Have an Account?
+            Have an Account? <br />
             <span className="line">
               {/* router link  */}
               <a href="#"> Sign In</a>
