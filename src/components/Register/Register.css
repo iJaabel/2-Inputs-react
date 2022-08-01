@@ -1,4 +1,4 @@
-/* .offscreen {
+.offscreen {
     position: absolute;
     left: -9999px;
 }
@@ -9,7 +9,7 @@
     font-weight: bold;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-} */
+}
 
 .line {
     display: inline-block;
