@@ -32,13 +32,18 @@ export default () => {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(`the user:\n`, user, `\nsuper secret information:\n`, pw);
     const v1 = USER_REGEX.test(user);
     const v2 = PW_REGEX.test(pw);
     if (!v1 || !v2) {
-      !v1 ? setErrorMesg("Username must have at least 1 capital character and between 3 to 23 characters") : setErrorMesg("Password must be 8 characters long, have a special character, have at least 1 capitalized character, and at least 1 number")
+      !v1
+        ? setErrorMesg(
+            "Username must have at least 1 capital character and between 4 to 23 characters"
+          )
+        : setErrorMesg(
+            "Password must be 8 characters long, use at least 1 of these special characters (!@#$%), have at least 1 capitalized character, and at least 1 number"
+          );
       return;
     }
     // setUser("");
@@ -100,7 +105,7 @@ export default () => {
               Have an Account? <br />
               <span className="line">
                 {/* router link  */}
-                <a href="#"> Sign In</a>
+                <a href="/"> Sign In</a>
               </span>
             </p>
           </section>
