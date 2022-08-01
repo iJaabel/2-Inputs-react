@@ -1,6 +1,6 @@
 # Technical Screening
 
-Check out the [live example](https://github.com/facebook/create-react-app).
+Check out the [Sandbox example](https://codesandbox.io/s/2-inputs-live-example-inyyxi?file=/src/index.js).
 
 ## Requirements
 
